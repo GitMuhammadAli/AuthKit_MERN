@@ -1,48 +1,46 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { useAuth } from "../hooks/AuthContext";
-import { GoogleLoginRequest, forgetPassword } from "../Api/api";
+import { forgetPassword } from "../Api/api";
 import { response } from "../utils/ResponceMessages";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // useEffect(() => {
+  //   if (location.state && location.state.successMessage) {
+  //     toast.success(location.state.successMessage);
+  //   }
+  // }, [location]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await forgetPassword();
-      console.log("Forget  response:", response);
-      if (response.status === 200) {
-        const successMessage = "Login successful";
-        if (response.data.user.role === "admin") {
-          navigate("/admin", { state: { successMessage } });
-        } else {
-          navigate("/", { state: { successMessage } });
-        }
+      const res = await forgetPassword(email);
+      // const res = { data: { success: true , message:"OTP sent successfully Please Check your Email" } };
+      console.log("res", res);
+      // const res = { data: { success: false } };
+      if (res.data.success === true) {
+        navigate("/auth/otp", { state: { successMessage: res.data.message }});
+      } else {
+        toast.error(res.data.message);
       }
     } catch (error) {
-      console.error("Google sign-in failed", error);
-      toast.error(response.login.failed);
+      console.error("Forgot password request failed", error);
+      toast.error(response.forgotPassword.failed);
     }
   };
 
-  const handleGoogleSignIn = async (e) => {
-    e.preventDefault();
-    console.log("Google login initiated");
-    try {
-      await GoogleLoginRequest();
-      navigate("/", { state: { successMessage: response.login.success } });
-    } catch (error) {
-      console.error("Google sign-in failed", error);
-      toast.error(response.login.failed);
-    }
-  };
   return (
     <section className="pt-14 pb-22 flex flex-col md:flex-row container mx-auto px-3">
+      {/* <ToastContainer /> */}
+
       <div className="pt-8 md:pt-[67px] pb-8 md:pb-[87px] flex flex-col-reverse md:flex-row container mx-auto px-4 md:px-6">
         <div className="mb-8 md:mb-0 md:ml-[10px] md:mr-5 md:mt-[10px] w-full md:w-1/2 flex flex-col items-center">
-          <img src="/images/reset.jpg" alt="sign in" />
+          <img src="/images/reset.jpg" alt="Reset Password" />
           <p className="mt-6 text-center">
             <Link to="/auth/signup" className="text-blue-500 hover:underline">
               Sign In
@@ -77,23 +75,8 @@ function ForgotPassword() {
               </button>
             </div>
           </form>
-
-          <div className="mt-6 text-center">
-            <span className="text-gray-600">Or login with</span>
-            <ul className="flex justify-center space-x-4 mt-4">
-              <li>
-                <button
-                  onClick={handleGoogleSignIn}
-                  className="flex items-center justify-center text-white bg-red-600 hover:bg-red-700 px-2 py-2 rounded-lg transform hover:scale-110 transition-transform duration-300"
-                >
-                  <i className="zmdi zmdi-google flex items-center justify-center"></i>
-                </button>
-              </li>
-            </ul>
-          </div>
         </div>
       </div>
-      <ToastContainer />
     </section>
   );
 }

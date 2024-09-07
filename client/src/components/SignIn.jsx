@@ -13,17 +13,18 @@ function SignIn() {
   const location = useLocation();
   const { login } = useAuth();
 
-  useEffect(() => {
-    if (location.state && location.state.successMessage) {
-      toast.success(location.state.successMessage);
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   if (location.state && location.state.successMessage) {
+  //     toast.success(location.state.successMessage);
+  //   }
+  // }, [location]);
 
   const handleGoogleSignIn = async (e) => {
     e.preventDefault();
     console.log("Google login initiated");
     try {
       await GoogleLoginRequest();
+      
       navigate("/", { state: { successMessage: response.login.success } });
     } catch (error) {
       console.error("Google sign-in failed", error);
@@ -146,7 +147,7 @@ function SignIn() {
           </div>
         </div>
       </div>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </section>
   );
 }

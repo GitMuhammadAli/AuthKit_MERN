@@ -26,13 +26,15 @@ function MainLayout() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <ToastContainer />
+
       <header className="bg-gray-800 text-white">
         <nav className="container mx-auto px-4 py-2">
           <ul className="flex space-x-4 justify-center items-center ">
             <li>
-              <a href="/" className="hover:text-gray-300">
+              <Link  to="/" className="hover:text-gray-300">
                 Home
-              </a>
+              </Link>
             </li>
             <li></li>
             <li className="container mx-auto px-4 py-2 flex justify-end">
@@ -85,7 +87,6 @@ function MainLayout() {
           </p>
         </div>
       </footer>
-      <ToastContainer/>
     </div>
   );
 }

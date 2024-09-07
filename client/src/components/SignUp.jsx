@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React, { useState,  } from "react";
+import { Link, useNavigate,  } from "react-router-dom";
 import { register } from "../Api/api";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { response } from "../utils/ResponceMessages";
 
@@ -12,13 +12,8 @@ function SignUp() {
   const [repeatPassword, setRepeatPassword] = useState("");
 
   const navigate = useNavigate();
-  const location = useLocation();
 
-  useEffect(() => {
-    if (location.state && location.state.successMessage) {
-      toast.success(location.state.successMessage);
-    }
-  }, [location]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -126,7 +121,7 @@ function SignUp() {
         </div>
       </div>
 
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </section>
   );
 }

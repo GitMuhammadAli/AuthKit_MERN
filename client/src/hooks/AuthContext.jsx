@@ -9,14 +9,15 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [status, setStatus] = useState("loading");
 
-  const fetchUserData = async () => {
-    try {
-      const token = Cookies.get("jwt");
-      if (token) {
-        const decodedToken = decodeToken(token);
-        if (decodedToken) {
-          const response = await User();
-          const userData = response.data.user;
+ const fetchUserData = async () => {
+  try {
+    const token = Cookies.get("jwt");
+    if (token) {
+      const decodedToken = decodeToken(token);
+      if (decodedToken) {
+        const response = await User();
+        const userData = response.data?.user;
+        if (userData) {
           setUser(userData);
           setStatus("authenticated");
         } else {
@@ -25,11 +26,14 @@ export const AuthProvider = ({ children }) => {
       } else {
         setStatus("unauthenticated");
       }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
+    } else {
       setStatus("unauthenticated");
     }
-  };
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    setStatus("unauthenticated");
+  }
+};
 
   useEffect(() => {
     fetchUserData();

@@ -2,16 +2,10 @@ const jsonwebtoken = require("jsonwebtoken");
 require("dotenv").config();
 
 const makeToken = (_id, role) => {
-  return jsonwebtoken.sign(
-    { _id, role },
-    process.env.JWT_API_SECRET_KEY,
-    {
-      expiresIn: "1d",
-    }
-  );
+  return jsonwebtoken.sign({ _id, role }, process.env.JWT_API_SECRET_KEY, {
+    expiresIn: "1d",
+  });
 };
-
-  
 
 const GenerateToken = async (user, req, res) => {
   try {
@@ -19,9 +13,9 @@ const GenerateToken = async (user, req, res) => {
     const token = await makeToken(user._id, user.role);
     res.cookie("jwt", token, {
       httpOnly: false,
-      maxAge: 24 * 60 * 60 * 1000,
-      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-    //   secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      //   secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
     });
     return token;
   } catch (error) {

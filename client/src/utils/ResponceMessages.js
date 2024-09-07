@@ -50,4 +50,13 @@ export const response = {
     success: "Operation completed successfully",
     failed: "Operation failed",
   },
+  otp: {
+    sent: "OTP sent successfully Please Check your Email",
+    failed: "Failed to send OTP",
+    success:"Otp Verified Successfully",
+  },
+  forgotPassword: {
+    success: "Forgot password request successful",
+    failed: "Forgot password request failed Please Try Again",
+  },
 };

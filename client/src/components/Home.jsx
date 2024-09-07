@@ -17,7 +17,6 @@ function Home() {
       <h1>Welcome, {user.name}!</h1>
       <p>Email: {user.email}</p>
       <p>Role: {user.role}</p>
-      {/* Add more fields as needed */}
     </div>
   );
 }

@@ -1,16 +1,17 @@
 const jsonwebtoken = require("jsonwebtoken");
 require("dotenv").config();
 
-const makeToken = (_id, role) => {
-  return jsonwebtoken.sign({ _id, role }, process.env.JWT_API_SECRET_KEY, {
+const makeToken = async(_id ) => {
+  return jsonwebtoken.sign({ _id }, process.env.JWT_API_SECRET_KEY, {
     expiresIn: "1d",
   });
 };
 
+
 const GenerateToken = async (user, req, res) => {
   try {
     await res.clearCookie("jwt");
-    const token = await makeToken(user._id, user.role);
+    const token = await makeToken(user._id);
     res.cookie("jwt", token, {
       httpOnly: false,
       maxAge: 7 * 24 * 60 * 60 * 1000,

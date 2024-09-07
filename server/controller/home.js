@@ -9,6 +9,7 @@ exports.userHome = async (req, res) => {
     }
     console.log("sending to frontend" + user )
     res.status(200).json({
+      success: true,
       message: "User data retrieved successfully",
       user,
     });

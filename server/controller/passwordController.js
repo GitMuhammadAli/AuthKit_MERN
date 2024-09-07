@@ -16,16 +16,12 @@ const generateOTP = () => {
 
 const CheckMailforForget = async (req, res) => {
   const { email } = req.body;
-  console.log(req.body);
-
   try {
     // if (!validator.isEmail(email)) {
     //   return res.status(400).json({ success: false, message: "Invalid email format." });
     // }
 
     const Findmail = await Users.findOne({ email });
-    console.log("findmail", Findmail);
-
     if (Findmail.role === "admin") {
       return res.json({
         success: false,
@@ -102,7 +98,8 @@ const CheckMailforForget = async (req, res) => {
   }
 };
 
-// Token decoding for otp
+
+
 
 // OTP confirmation
 const verifyOTP = async (userOTP, storedOTP, expirationTime) => {
@@ -202,7 +199,7 @@ const CreateNewPassword = async (req, res) => {
     const { Password, RepeatPassword } = req.body;
     if (!Cookie) {
       return res.json({
-        message: "Password Reset TimeOut ",
+        message: "Password Reset TimeOut",
         success: false,
         status: 404,
       });
@@ -245,6 +242,8 @@ const CreateNewPassword = async (req, res) => {
     if (!user) {
       return res.json({ success: false, message: "User Don't Found" });
     } else {
+      console.log(user);
+
       res.clearCookie("resetPasswordOTP");
       res.clearCookie("jwt");
 
@@ -253,8 +252,6 @@ const CreateNewPassword = async (req, res) => {
         message: "Password Changed Successfully",
       });
     }
-
-    console.log(user);
   } catch (error) {
     console.log(error);
     return res.json({ success: false, message: "Server Error" });

@@ -51,7 +51,7 @@ exports.FindUser = async (req, res, next) => {
     const cookieOtp = req.cookies.resetPasswordOTP;
 
     if (!cookieOtp) {
-      return res.redirect("/auth/forget");
+      return res.status(401).json({ message: "No token provided" });
     }
 
     const decodedToken = jsonwebtoken.verify(
@@ -64,15 +64,15 @@ exports.FindUser = async (req, res, next) => {
     if (emailVerified === false) {
       if (otpVerified === false) {
         console.log("Email verified but OTP not verified yet");
-        return res.redirect("/auth/otp");
+        return res.status(401).json({ message: "OTP not verified" });
       }
       console.log("Email Not verified in Cookie ");
-      return res.redirect("/auth/forget");
+      return res.status(401).json({ message: "Email not verified" });
     }
 
     next();
   } catch (error) {
     console.error("Error verifying OTP:", error);
-    return res.redirect("/auth/forget");
+    return res.status(401).json({ message: "Internal server error" });
   }
 };

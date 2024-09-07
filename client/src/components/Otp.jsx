@@ -7,39 +7,25 @@ import { verifyOtp } from "../Api/api";
 function Otp() {
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // useEffect(() => {
-  //   if (location.state && location.state.successMessage) {
-  //     toast.success(location.state.successMessage);
-  //   }
-  // }, [location]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await verifyOtp({ otp });
-      console.log("OTP verification response:", res);
-
       if (res.status === 200) {
-        console.log("OTP verification successful");
-        // toast.success(response.message);
         navigate("/auth/resetPassword", {
-          state: { successMessage: response.otp.success },
+          state: { successMessage: response.otp.success || res.message },
         });
       } else {
-        toast.error(response.message);
+        toast.error(res.message || "OTP verification failed.");
       }
     } catch (error) {
-      console.error("OTP verification error:", error);
       toast.error("An error occurred. Please try again.");
     }
   };
 
   return (
     <section className="pt-14 pb-22 flex flex-col md:flex-row container mx-auto px-3">
-      {/* <ToastContainer /> */}
-
       <div className="pt-8 md:pt-[67px] pb-8 md:pb-[87px] flex flex-col-reverse md:flex-row container mx-auto px-4 md:px-6">
         <div className="mb-8 md:mb-0 md:ml-[10px] md:mr-5 md:mt-[10px] w-full md:w-1/2 flex flex-col items-center">
           <img src="/images/otp.jpg" alt="sign in" />

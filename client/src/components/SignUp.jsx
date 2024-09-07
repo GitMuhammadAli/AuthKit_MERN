@@ -13,8 +13,6 @@ function SignUp() {
 
   const navigate = useNavigate();
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -23,9 +21,9 @@ function SignUp() {
       return;
     }
     try {
-      await register({ name, email, password });
+      const res  = await register({ name, email, password });
       navigate("/auth/signIn", {
-        state: { successMessage: response.register.success },
+        state: { successMessage: response.register.success || res.message},
       });
     } catch (error) {
       if (error.response && error.response.data) {

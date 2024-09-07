@@ -10,14 +10,9 @@ function SignIn() {
   const [your_pass, setPassword] = useState("");
 
   const navigate = useNavigate();
-  const location = useLocation();
   const { login } = useAuth();
 
-  // useEffect(() => {
-  //   if (location.state && location.state.successMessage) {
-  //     toast.success(location.state.successMessage);
-  //   }
-  // }, [location]);
+
 
   const handleGoogleSignIn = async (e) => {
     e.preventDefault();
@@ -25,7 +20,7 @@ function SignIn() {
     try {
       await GoogleLoginRequest();
       
-      navigate("/", { state: { successMessage: response.login.success } });
+      navigate("/", { state: { successMessage: response.login.google } });
     } catch (error) {
       console.error("Google sign-in failed", error);
       toast.error(response.login.failed);
@@ -60,10 +55,10 @@ function SignIn() {
       if (apiResponse.status === 200) {
         if (apiResponse.data.user.role === "admin") {
           navigate("/admin", {
-            state: { successMessage: response.login.success },
+            state: { successMessage: response.login.success ||apiResponse.message },
           });
         } else {
-          navigate("/", { state: { successMessage: response.login.success } });
+          navigate("/", { state: { successMessage: response.login.success || apiResponse.message } });
         }
       }
     } catch (err) {
@@ -147,7 +142,6 @@ function SignIn() {
           </div>
         </div>
       </div>
-      {/* <ToastContainer /> */}
     </section>
   );
 }

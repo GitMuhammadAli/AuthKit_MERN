@@ -1,43 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { forgetPassword } from "../Api/api";
 import { response } from "../utils/ResponceMessages";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // useEffect(() => {
-  //   if (location.state && location.state.successMessage) {
-  //     toast.success(location.state.successMessage);
-  //   }
-  // }, [location]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const res = await forgetPassword(email);
-      // const res = { data: { success: true , message:"OTP sent successfully Please Check your Email" } };
-      console.log("res", res);
-      // const res = { data: { success: false } };
-      if (res.data.success === true) {
-        navigate("/auth/otp", { state: { successMessage: res.data.message }});
+      if (res.data.success) {
+        navigate("/auth/otp", { state: { successMessage: res.data.message || "OTP sent successfully." } });
       } else {
-        toast.error(res.data.message);
+        toast.error(res.data.message || "Failed to process request.");
       }
     } catch (error) {
       console.error("Forgot password request failed", error);
-      toast.error(response.forgotPassword.failed);
+      toast.error(response.forgotPassword.failed || "Server error. Please try again later.");
     }
   };
 
   return (
     <section className="pt-14 pb-22 flex flex-col md:flex-row container mx-auto px-3">
-      {/* <ToastContainer /> */}
-
       <div className="pt-8 md:pt-[67px] pb-8 md:pb-[87px] flex flex-col-reverse md:flex-row container mx-auto px-4 md:px-6">
         <div className="mb-8 md:mb-0 md:ml-[10px] md:mr-5 md:mt-[10px] w-full md:w-1/2 flex flex-col items-center">
           <img src="/images/reset.jpg" alt="Reset Password" />
@@ -65,7 +53,6 @@ function ForgotPassword() {
                 required
               />
             </div>
-
             <div>
               <button
                 type="submit"

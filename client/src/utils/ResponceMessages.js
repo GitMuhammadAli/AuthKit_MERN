@@ -2,6 +2,7 @@ export const response = {
   login: {
     success: "Login successful",
     failed: "Login failed",
+    google: "Google login successful",
   },
   register: {
     success: "Registration successful",

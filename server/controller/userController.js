@@ -28,9 +28,9 @@ const Register = async (req, res) => {
       return res.status(400).json({ message: "Invalid input" });
     }
 
-    if (!validator.isEmail(email)) {
-      return res.status(400).json({ message: "Invalid email format" });
-    }
+    // if (!validator.isEmail(email)) {
+    //   return res.status(400).json({ message: "Invalid email format" });
+    // }
 
     const emailCheck = await Users.findOne({ email });
     if (emailCheck) {
@@ -77,7 +77,7 @@ const login = async (req, res) => {
 const handleGoogleCallback = async (req, res) => {
   try {
     await GenerateToken(req.user, req, res);
-    res.redirect(process.env.CLIENT_URL || "http://localhost:4000/");
+    res.redirect(process.env.CLIENT_URL || "http://localhost:4000/" );
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Login failed" });
@@ -89,7 +89,7 @@ const logout = async (req, res) => {
     await res.clearCookie("jwt");
     await res.clearCookie("resetPasswordOTP");
     await req.session.destroy();
-    res.status(200).json({ message: "Logout successful" });
+    return res.status(200).json({ message: "Logout successful" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });

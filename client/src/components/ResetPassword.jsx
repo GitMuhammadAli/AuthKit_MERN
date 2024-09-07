@@ -8,35 +8,26 @@ function ResetPassword() {
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const navigate = useNavigate();
-  const location = useLocation();
 
-  // useEffect(() => {
-  //   if (location.state && location.state.successMessage) {
-  //     toast.success(location.state.successMessage);
-  //   }
-  // }, [location]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate passwords match
     if (password !== repeatPassword) {
       toast.error("Passwords do not match.");
       return;
     }
 
     try {
-      // Send both password and repeatPassword to the backend
       const res = await resetPassword({
         Password: password,
         RepeatPassword: repeatPassword,
       });
-      console.log("res", res);
       if (res.data.success) {
-        // Navigate to the sign-in page after success
         navigate("/auth/signin", {
           state: {
-            successMessage: "Password reset successfully, please sign in.",
+            successMessage: "Password reset successfully, please sign in." || res.data.message,
           },
         });
       } else if (res.status === 404) {
@@ -51,7 +42,6 @@ function ResetPassword() {
 
   return (
     <section className="pt-14 pb-22 flex flex-col md:flex-row container mx-auto px-3">
-      {/* <ToastContainer /> */}
       <div className="pt-8 md:pt-[67px] pb-8 md:pb-[87px] flex flex-col-reverse md:flex-row container mx-auto px-4 md:px-6">
         <div className="mb-8 md:mb-0 md:ml-[10px] md:mr-5 md:mt-[10px] w-full md:w-1/2 flex flex-col items-center">
           <img src="/images/reset.jpg" alt="Reset Password" />
